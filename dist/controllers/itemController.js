@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteItem = exports.updateItem = exports.createItem = exports.getItemById = exports.getItems = void 0;
-let items = [
+const items = [
     { id: 1, name: 'Item 1', description: 'This is item 1' },
     { id: 2, name: 'Item 2' },
 ];

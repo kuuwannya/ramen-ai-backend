@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { Item } from '../models/item';
 
-let items: Item[] = [
+const items: Item[] = [
   { id: 1, name: 'Item 1', description: 'This is item 1' },
   { id: 2, name: 'Item 2' },
 ];
