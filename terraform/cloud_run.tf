@@ -68,6 +68,16 @@ resource "google_cloud_run_v2_service" "default" {
         }
       }
 
+      env {
+        name = "GOOGLE_MAPS_API_KEY"
+        value_source {
+          secret_key_ref {
+            secret  = google_secret_manager_secret.secrets["GOOGLE_MAPS_API_KEY"].secret_id
+            version = "latest"
+          }
+        }
+      }
+
       ports {
         container_port = 8080
         name           = "http1"

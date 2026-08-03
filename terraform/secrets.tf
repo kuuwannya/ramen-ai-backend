@@ -6,6 +6,14 @@ locals {
     "RAILS_MASTER_KEY",
     "GCP_CLIENT_ID",
     "GCP_CLIENT_SECRET",
+    "GOOGLE_MAPS_API_KEY",
+  ]
+
+  # GOOGLE_MAPS_API_KEYは手動作成でIAMバインディングが無いため、アクセス権付与の対象外とする
+  secrets_with_iam = [
+    "RAILS_MASTER_KEY",
+    "GCP_CLIENT_ID",
+    "GCP_CLIENT_SECRET",
   ]
 }
 
@@ -23,7 +31,7 @@ resource "google_secret_manager_secret" "secrets" {
 
 # Cloud BuildサービスアカウントにSecret Managerへのアクセス権を付与
 resource "google_secret_manager_secret_iam_member" "cloudbuild_access" {
-  for_each  = toset(local.secrets)
+  for_each  = toset(local.secrets_with_iam)
   project   = var.project_id
   secret_id = google_secret_manager_secret.secrets[each.value].secret_id
   role      = "roles/secretmanager.secretAccessor"
@@ -32,7 +40,7 @@ resource "google_secret_manager_secret_iam_member" "cloudbuild_access" {
 
 # デフォルトComputeサービスアカウント（Cloud Runが使用）にSecret Managerへのアクセス権を付与
 resource "google_secret_manager_secret_iam_member" "cloudrun_access" {
-  for_each  = toset(local.secrets)
+  for_each  = toset(local.secrets_with_iam)
   project   = var.project_id
   secret_id = google_secret_manager_secret.secrets[each.value].secret_id
   role      = "roles/secretmanager.secretAccessor"
